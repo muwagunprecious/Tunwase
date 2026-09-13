@@ -7,19 +7,325 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  name      String   @default("Adetunwase Adenle")
+  email     String   @unique @default("adetunwase@animationhub.tv")
+  title     String   @default("Guinness World Record Artist, Educator & Founder")
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model KnowledgeFact {
+  id               String   @id @default(cuid())
+  fact             String
+  entity           String
+  category         String
+  source           String
+  sourceUrl        String?
+  dateCollected    DateTime @default(now())
+  lastVerified     DateTime @default(now())
+  confidence       String   @default("High")
+  privacy          String   @default("Public")
+  staleAfterDays   Int      @default(90)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model KnowledgeDocument {
+  id        String   @id @default(cuid())
+  title     String
+  entity    String
+  category  String
+  content   String
+  source    String?
+  confidence String  @default("High")
+  privacy   String   @default("Public")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SocialPost {
+  id               String   @id @default(cuid())
+  platform         String
+  entity           String   @default("PERSONAL")
+  topic            String
+  content          String
+  category         String
+  hashtags         String
+  likes            Int      @default(0)
+  comments         Int      @default(0)
+  shares           Int      @default(0)
+  views            Int      @default(0)
+  engagementRate   Float    @default(0.0)
+  isHighPerformer  Boolean  @default(false)
+  postedAt         DateTime @default(now())
+}
+
+model ContentDraft {
+  id               String   @id @default(cuid())
+  platform         String
+  entity           String   @default("PERSONAL")
+  topic            String
+  hook             String?
+  content          String
+  visualSuggestion String?
+  cta              String?
+  hashtags         String?
+  status           String   @default("Draft")
+  rejectionReason  String?
+  userEdits        String?
+  targetDate       DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Trend {
+  id                    String   @id @default(cuid())
+  title                 String
+  category              String
+  summary               String
+  relevanceAdetun       Int      @default(85)
+  relevanceAnimationHub Int      @default(80)
+  relevanceFoundation   Int      @default(75)
+  timelinessScore       Int      @default(90)
+  brandFitScore         Int      @default(88)
+  anglesJson            String
+  source                String
+  sourceUrl             String?
+  discoveredAt          DateTime @default(now())
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  company    String
+  email      String?
+  emailType  String?
+  phone      String?
+  linkedin   String?
+  website    String?
+  source     String
+  confidence String   @default("High")
+  isVerified Boolean  @default(false)
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model ResearchDossier {
+  id             String   @id @default(cuid())
+  query          String
+  targetType     String
+  targetName     String
+  roleOrIndustry String?
+  company        String?
+  summary        String
+  overviewJson   String
+  whyItMatters   String
+  confidence     String   @default("High")
+  sourcesJson    String
+  createdAt      DateTime @default(now())
+}
+
+model Meeting {
+  id                    String   @id @default(cuid())
+  title                 String
+  personName            String
+  personRole            String
+  company               String
+  meetingDate           DateTime
+  status                String   @default("Upcoming")
+  executiveSummary      String?
+  whoTheyAre            String?
+  whatTheyCareAbout     String?
+  connectionsToAdetun   String?
+  talkingPointsJson      String?
+  thingsToAvoidJson      String?
+  potentialPartnerships String?
+  isPrivateContext      Boolean  @default(true)
+  publicShareableNotes  String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model DailyBriefing {
+  id                    String   @id @default(cuid())
+  date                  String
+  executiveHeadline     String
+  threeKeyNewsJson      String
+  twoRelevantTrendsJson String
+  oneContentOppJson     String
+  recommendedDraftsJson String
+  meetingsOverview      String?
+  createdAt             DateTime @default(now())
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  category  String
+  entity    String   @default("PERSONAL")
+  content   String
+  source    String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StyleProfile {
+  id               String   @id @default(cuid())
+  entity           String   @unique @default("PERSONAL")
+  tone             String   @default("Direct, visionary, warm, conversational, punchy")
+  prohibitedRules  String   @default("No em dashes; No corporate cliches; No fake hype")
+  hookPatterns     String
+  closingPatterns  String
+  learnedRulesJson String
+  updatedAt        DateTime @updatedAt
+}
+
+model Task {
+  id                   String   @id @default(cuid())
+  title                String
+  description          String?
+  priority             String   @default("MEDIUM")
+  status               String   @default("INBOX")
+  deadline             DateTime?
+  entity               String   @default("PERSONAL")
+  projectName          String?
+  projectId            String?
+  personResponsible    String?  @default("Adetunwase Adenle")
+  dependenciesJson     String?
+  notes                String?
+  reminderScheduleJson String?
+  completedAt          DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Reminder {
+  id              String   @id @default(cuid())
+  taskId          String?
+  title           String
+  triggerAt       DateTime
+  type            String   @default("DATE")
+  status          String   @default("PENDING")
+  priority        String   @default("MEDIUM")
+  escalationLevel Int      @default(1)
+  recurrenceRule  String?
+  deliveredAt     DateTime?
+  createdAt       DateTime @default(now())
+}
+
 model Project {
-  id           String       @id @default(cuid())
-  orgId        String
-  programId    String?
-  title        String
-  description  String
-  location     String       @default("Ijora-Badia, Lagos")
-  startDate    String
-  outcomes     String[]
-  isVerified   Boolean      @default(true)
-  createdAt    DateTime     @default(now())
-  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  Program      Program?     @relation(fields: [programId], references: [id])
+  id                    String   @id @default(cuid())
+  name                  String
+  entity                String   @default("ANIMATION_HUB")
+  objective             String
+  expectedOutcome       String?
+  status                String   @default("ACTIVE")
+  healthScore           Int      @default(85)
+  healthReason          String?
+  deadline              DateTime?
+  predictedCompletionDate DateTime?
+  milestonesJson        String?
+  risksJson             String?
+  decisionsJson         String?
+  budget                String?
+  communicationPlan     String?
+  successMetrics        String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now())
+}
+
+model ActionItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  type        String
+  status      String   @default("NEEDS_APPROVAL")
+  payloadJson String?
+  riskLevel   String   @default("MEDIUM")
+  waitingOn   String?
+  executedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model Opportunity {
+  id                String   @id @default(cuid())
+  title             String
+  entity            String   @default("ANIMATION_HUB")
+  type              String
+  whyItMatters      String
+  potentialValue    String?
+  relevanceAdetun   Int      @default(90)
+  recommendedAction String
+  deadline          DateTime?
+  contactName       String?
+  contactInfo       String?
+  source            String
+  status            String   @default("NEW")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+}
+
+model RelationshipFollowUp {
+  id                  String   @id @default(cuid())
+  personName          String
+  company             String
+  role                String?
+  lastInteractionDate DateTime @default(now())
+  nextFollowUpDate    DateTime?
+  commitmentsByAdetun String?
+  commitmentsByThem   String?
+  waitingOnThem       Boolean  @default(false)
+  status              String   @default("PENDING")
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+}
+
+model DecisionRecord {
+  id             String   @id @default(cuid())
+  topic          String
+  optionA        String
+  optionB        String
+  criteriaJson   String
+  recommendation String
+  rationale      String
+  status         String   @default("DECIDED")
+  entity         String   @default("PERSONAL")
+  decidedAt      DateTime @default(now())
+}
+
+model StrategicRoadmap {
+  id                    String   @id @default(cuid())
+  entity                String   @default("ANIMATION_HUB")
+  title                 String
+  objective             String
+  currentState          String
+  roadmap12MonthJson    String
+  quarterlyGoalsJson    String
+  monthlyMilestonesJson String
+  keyMetricsJson        String
+  requiredResourcesJson String
+  next7DaysJson         String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now())
+}
+
+model OperationsReview {
+  id                String   @id @default(cuid())
+  date              String
+  type              String
+  prioritiesJson    String
+  overdueJson       String
+  bottlenecksJson   String
+  healthSummaryJson String
+  blindSpotsJson    String
+  aiReflection      String
+  createdAt         DateTime @default(now())
 }
 
 model AiConversation {
@@ -231,7 +537,6 @@ model Organization {
   GrantOpportunity GrantOpportunity[]
   ImpactMetric     ImpactMetric[]
   Program          Program[]
-  Project          Project[]
   VerifiedFact     VerifiedFact[]
 }
 
@@ -246,7 +551,6 @@ model Program {
   status       String       @default("Active")
   createdAt    DateTime     @default(now())
   Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  Project      Project[]
 }
 
 model ResearchTask {
