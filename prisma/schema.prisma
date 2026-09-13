@@ -1,330 +1,373 @@
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id        String   @id @default(cuid())
-  name      String   @default("Adetunwase Adenle")
-  email     String   @unique @default("adetunwase@animationhub.tv")
-  title     String   @default("Guinness World Record Artist, Educator & Founder")
-  bio       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model KnowledgeFact {
-  id               String   @id @default(cuid())
-  fact             String
-  entity           String   // PERSONAL | FOUNDATION | ANIMATION_HUB
-  category         String   // Biography, Milestone, Initiative, Product, Impact, Philosophy
-  source           String
-  sourceUrl        String?
-  dateCollected    DateTime @default(now())
-  lastVerified     DateTime @default(now())
-  confidence       String   @default("High") // High, Medium, Low
-  privacy          String   @default("Public") // Public, Internal, Private, Content-ready
-  staleAfterDays   Int      @default(90)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model KnowledgeDocument {
-  id               String   @id @default(cuid())
-  title            String
-  entity           String   // PERSONAL | FOUNDATION | ANIMATION_HUB
-  category         String
-  content          String
-  source           String?
-  confidence       String   @default("High")
-  privacy          String   @default("Public")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model SocialPost {
-  id               String   @id @default(cuid())
-  platform         String   // LINKEDIN | X | INSTAGRAM | FACEBOOK
-  entity           String   @default("PERSONAL")
-  topic            String
-  content          String
-  category         String   // Creative Tech, Animation, Youth, Leadership, Personal, Milestone
-  hashtags         String   // JSON string or comma-separated
-  likes            Int      @default(0)
-  comments         Int      @default(0)
-  shares           Int      @default(0)
-  views            Int      @default(0)
-  engagementRate   Float    @default(0.0)
-  isHighPerformer  Boolean  @default(false)
-  postedAt         DateTime @default(now())
-}
-
-model ContentDraft {
-  id               String   @id @default(cuid())
-  platform         String   // LINKEDIN | X | INSTAGRAM | FACEBOOK
-  entity           String   @default("PERSONAL")
-  topic            String
-  hook             String?
-  content          String
-  visualSuggestion String?
-  cta              String?
-  hashtags         String?
-  status           String   @default("Draft") // Draft, Approved, Scheduled, Published, Rejected
-  rejectionReason  String?
-  userEdits        String?  // Learned delta between generated and user edited
-  targetDate       DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model Trend {
-  id                    String   @id @default(cuid())
-  title                 String
-  category              String   // AI & Tech, Animation, African Business, Creative Industry, Youth
-  summary               String
-  relevanceAdetun       Int      @default(85) // Score 1-100
-  relevanceAnimationHub Int      @default(80) // Score 1-100
-  relevanceFoundation   Int      @default(75) // Score 1-100
-  timelinessScore       Int      @default(90) // Score 1-100
-  brandFitScore         Int      @default(88) // Score 1-100
-  anglesJson            String   // JSON array of 3 unique angles for Adetunwase
-  source                String
-  sourceUrl             String?
-  discoveredAt          DateTime @default(now())
-}
-
-model Contact {
-  id           String   @id @default(cuid())
-  name         String
-  role         String
-  company      String
-  email        String?
-  emailType    String?  // "Official", "Inferred Pattern", "Public Directory"
-  phone        String?
-  linkedin     String?
-  website      String?
-  source       String
-  confidence   String   @default("High") // High, Medium, Low
-  isVerified   Boolean  @default(false)
-  notes        String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model ResearchDossier {
-  id             String   @id @default(cuid())
-  query          String
-  targetType     String   // PERSON | COMPANY
-  targetName     String
-  roleOrIndustry String?
-  company        String?
-  summary        String
-  overviewJson   String   // JSON structured sections
-  whyItMatters   String
-  confidence     String   @default("High")
-  sourcesJson    String   // JSON array of citations
-  createdAt      DateTime @default(now())
-}
-
-model Meeting {
-  id                    String   @id @default(cuid())
-  title                 String
-  personName            String
-  personRole            String
-  company               String
-  meetingDate           DateTime
-  status                String   @default("Upcoming") // Upcoming, Completed, Postponed
-  executiveSummary      String?
-  whoTheyAre            String?
-  whatTheyCareAbout     String?
-  connectionsToAdetun   String?
-  talkingPointsJson     String?  // JSON array
-  thingsToAvoidJson     String?  // JSON array
-  potentialPartnerships String?
-  isPrivateContext      Boolean  @default(true)
-  publicShareableNotes  String?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-}
-
-model DailyBriefing {
-  id                    String   @id @default(cuid())
-  date                  String   // YYYY-MM-DD
-  executiveHeadline     String
-  threeKeyNewsJson      String   // JSON array
-  twoRelevantTrendsJson String   // JSON array
-  oneContentOppJson     String   // JSON object
-  recommendedDraftsJson String   // JSON array
-  meetingsOverview      String?
-  createdAt             DateTime @default(now())
-}
-
-model Memory {
-  id        String   @id @default(cuid())
-  category  String   // PERMANENT | CURRENT | PRIVATE | CONTENT
-  entity    String   @default("PERSONAL")
-  content   String
-  source    String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model StyleProfile {
-  id               String   @id @default(cuid())
-  entity           String   @unique @default("PERSONAL")
-  tone             String   @default("Direct, visionary, warm, conversational, punchy")
-  prohibitedRules  String   @default("No em dashes; No corporate cliches like 'delve into', 'testament to', 'in today's rapidly evolving landscape'; No fake hype")
-  hookPatterns     String   // JSON array of proven hooks
-  closingPatterns  String   // JSON array of closing CTAs
-  learnedRulesJson String   // JSON array of learned patterns from edits
-  updatedAt        DateTime @updatedAt
-}
-
-model Task {
-  id                   String    @id @default(cuid())
-  title                String
-  description          String?
-  priority             String    @default("MEDIUM") // CRITICAL, HIGH, MEDIUM, LOW
-  status               String    @default("INBOX") // INBOX, PLANNED, IN_PROGRESS, WAITING, BLOCKED, COMPLETED, CANCELLED
-  deadline             DateTime?
-  entity               String    @default("PERSONAL") // PERSONAL, ANIMATION_HUB, FOUNDATION
-  projectName          String?
-  projectId            String?
-  personResponsible    String?   @default("Adetunwase Adenle")
-  dependenciesJson     String?   // JSON array of task IDs or names
-  notes                String?
-  reminderScheduleJson String?   // JSON array of reminder specifications
-  completedAt          DateTime?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
-}
-
-model Reminder {
-  id              String    @id @default(cuid())
-  taskId          String?
-  title           String
-  triggerAt       DateTime
-  type            String    @default("DATE") // ONE_TIME, DATE, RECURRING, RELATIVE, FOLLOW_UP, DEADLINE, ESCALATING
-  status          String    @default("PENDING") // PENDING, DELIVERED, DISMISSED
-  priority        String    @default("MEDIUM") // CRITICAL, HIGH, MEDIUM, LOW
-  escalationLevel Int       @default(1) // 1 = pending, 2 = incomplete warning, 3 = overdue critical
-  recurrenceRule  String?
-  deliveredAt     DateTime?
-  createdAt       DateTime  @default(now())
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Project {
-  id                      String    @id @default(cuid())
-  name                    String
-  entity                  String    @default("ANIMATION_HUB") // PERSONAL, ANIMATION_HUB, FOUNDATION
-  objective               String
-  expectedOutcome         String?
-  status                  String    @default("ACTIVE") // PLANNED, ACTIVE, ON_HOLD, COMPLETED
-  healthScore             Int       @default(85) // 0 - 100
-  healthReason            String?
-  deadline                DateTime?
-  predictedCompletionDate DateTime?
-  milestonesJson          String?   // JSON array of milestones: { title, targetDate, completed }
-  risksJson               String?   // JSON array of risks: { risk, severity, probability, mitigation }
-  decisionsJson           String?   // JSON array of decisions: { decision, date, reason }
-  budget                  String?
-  communicationPlan       String?
-  successMetrics          String?
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
+  id           String       @id @default(cuid())
+  orgId        String
+  programId    String?
+  title        String
+  description  String
+  location     String       @default("Ijora-Badia, Lagos")
+  startDate    String
+  outcomes     String[]
+  isVerified   Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  Program      Program?     @relation(fields: [programId], references: [id])
 }
 
-model ActionItem {
-  id          String    @id @default(cuid())
-  title       String
+model AiConversation {
+  id        String      @id
+  title     String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime
+  AiMessage AiMessage[]
+}
+
+model AiMessage {
+  id             String         @id
+  conversationId String
+  sender         String
+  content        String
+  citations      String?
+  intent         String?
+  createdAt      DateTime       @default(now())
+  AiConversation AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id
+  action    String
+  details   String
+  user      String   @default("Admin")
+  createdAt DateTime @default(now())
+}
+
+model CommunityInfo {
+  id              String   @id
+  name            String   @default("Ijora-Badia")
+  location        String   @default("Lagos State, Nigeria")
+  description     String
+  challenges      String[]
+  interventions   String[]
+  opportunities   String[]
+  youthPopulation String   @default("Estimated thousands of children & youth")
+  updatedAt       DateTime
+}
+
+model Document {
+  id            String          @id
+  orgId         String
+  title         String
+  fileType      String
+  fileSize      String
+  uploadDate    DateTime        @default(now())
+  category      String
+  factsCount    Int             @default(0)
+  metricsCount  Int             @default(0)
+  content       String
+  Organization  Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  DocumentChunk DocumentChunk[]
+}
+
+model DocumentChunk {
+  id         String   @id
+  documentId String
+  content    String
+  chunkIndex Int
+  metadata   String?
+  Document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+model EmailMessage {
+  id         String        @id
+  sender     String
+  subject    String
+  snippet    String
+  body       String
+  receivedAt DateTime      @default(now())
+  category   EmailCategory @default(GRANT_OPPORTUNITY)
+  matchScore Int?
+  aiSummary  String
+  draftReply String?
+  status     EmailStatus   @default(PENDING_APPROVAL)
+}
+
+model FactConflict {
+  id               String    @id
+  topic            String
+  claimA           String
+  claimASources    String[]
+  claimB           String
+  claimBSources    String[]
+  recommendedClaim String
+  recommendReason  String
+  status           String    @default("OPEN")
+  resolvedClaim    String?
+  createdAt        DateTime  @default(now())
+  WebFact          WebFact[]
+}
+
+model Founder {
+  id           String   @id
+  name         String   @default("Adetunwase Adenle")
+  title        String   @default("Founder & Creative Director")
+  bio          String
+  story        String
+  education    String
+  philosophy   String
+  achievements String[]
+  awards       String[]
+  mediaLinks   String[]
+  verified     Boolean  @default(true)
+  updatedAt    DateTime
+}
+
+model GrantApplication {
+  id               String           @id
+  grantId          String
+  title            String
+  content          String
+  sections         String
+  missingItems     String[]
+  status           String           @default("Draft")
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime
+  GrantOpportunity GrantOpportunity @relation(fields: [grantId], references: [id], onDelete: Cascade)
+}
+
+model GrantOpportunity {
+  id               String             @id
+  orgId            String
+  title            String
+  funder           String
+  deadline         String
+  amount           String
+  geography        String
+  eligibility      String
+  matchScore       Int
+  classification   GrantCategory      @default(CAN_PREPARE)
+  missionScore     Int                @default(95)
+  programScore     Int                @default(90)
+  geoScore         Int                @default(100)
+  beneficiaryScore Int                @default(95)
+  fundingScore     Int                @default(85)
+  eligibilityScore Int                @default(90)
+  strategicScore   Int                @default(95)
+  matchReasons     String[]
+  missingInfo      String[]
+  recommendation   String
+  status           String             @default("Discovered")
+  createdAt        DateTime           @default(now())
+  GrantApplication GrantApplication[]
+  Organization     Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+model ImpactMetric {
+  id           String       @id
+  orgId        String
+  metricName   String
+  value        String
+  numericVal   Int          @default(0)
+  unit         String
+  category     String
+  year         Int          @default(2026)
+  isVerified   Boolean      @default(true)
+  sourceDoc    String?
+  createdAt    DateTime     @default(now())
+  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+model KnowledgeEntity {
+  id                                                                  String              @id
+  canonicalName                                                       String              @unique
+  entityType                                                          String
+  description                                                         String?
+  aliases                                                             String[]
+  confidence                                                          String              @default("HIGH")
+  needsAdminReview                                                    Boolean             @default(false)
+  createdAt                                                           DateTime            @default(now())
+  KnowledgeRelation_KnowledgeRelation_sourceEntityIdToKnowledgeEntity KnowledgeRelation[] @relation("KnowledgeRelation_sourceEntityIdToKnowledgeEntity")
+  KnowledgeRelation_KnowledgeRelation_targetEntityIdToKnowledgeEntity KnowledgeRelation[] @relation("KnowledgeRelation_targetEntityIdToKnowledgeEntity")
+}
+
+model KnowledgeRelation {
+  id                                                                String          @id
+  sourceEntityId                                                    String
+  targetEntityId                                                    String
+  relationType                                                      String
+  confidence                                                        Float           @default(0.9)
+  createdAt                                                         DateTime        @default(now())
+  KnowledgeEntity_KnowledgeRelation_sourceEntityIdToKnowledgeEntity KnowledgeEntity @relation("KnowledgeRelation_sourceEntityIdToKnowledgeEntity", fields: [sourceEntityId], references: [id], onDelete: Cascade)
+  KnowledgeEntity_KnowledgeRelation_targetEntityIdToKnowledgeEntity KnowledgeEntity @relation("KnowledgeRelation_targetEntityIdToKnowledgeEntity", fields: [targetEntityId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id
+  title     String
+  message   String
+  type      String   @default("info")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Organization {
+  id               String             @id
+  name             String             @default("Slum Art Foundation")
+  location         String             @default("Ijora-Badia, Lagos, Nigeria")
+  foundedYear      Int                @default(2018)
+  mission          String
+  vision           String
+  overview         String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  Document         Document[]
+  GrantOpportunity GrantOpportunity[]
+  ImpactMetric     ImpactMetric[]
+  Program          Program[]
+  Project          Project[]
+  VerifiedFact     VerifiedFact[]
+}
+
+model Program {
+  id           String       @id
+  orgId        String
+  title        String
+  slug         String       @unique
+  category     String
+  description  String
+  objectives   String[]
+  status       String       @default("Active")
+  createdAt    DateTime     @default(now())
+  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  Project      Project[]
+}
+
+model ResearchTask {
+  id              String   @id
+  query           String
+  targetCategory  String   @default("ORGANIZATION")
+  status          String   @default("COMPLETED")
+  sourcesAnalyzed Int      @default(0)
+  factsDiscovered Int      @default(0)
+  entitiesFound   Int      @default(0)
+  conflictsFound  Int      @default(0)
+  logMessages     String[]
+  runAt           DateTime @default(now())
+}
+
+model SlumartTimelineEvent {
+  id          String   @id
+  dateStr     String
+  year        Int      @default(2018)
+  eventTitle  String
   description String
-  type        String    // SEND_EMAIL, PUBLISH_POST, SCHEDULE_MEETING, CREATE_TASK, UPDATE_STATUS, WAITING_ITEM
-  status      String    @default("NEEDS_APPROVAL") // NEEDS_APPROVAL, APPROVED, REJECTED, AUTO_COMPLETED, WAITING
-  payloadJson String?   // JSON structured action parameters
-  riskLevel   String    @default("MEDIUM") // LOW, MEDIUM, HIGH
-  waitingOn   String?   // Who or what this action is waiting on (e.g. John's response, contract)
-  executedAt  DateTime?
-  createdAt   DateTime  @default(now())
+  category    String   @default("MILESTONE")
+  sourceUrl   String?
+  confidence  Int      @default(90)
+  createdAt   DateTime @default(now())
 }
 
-model Opportunity {
-  id                String    @id @default(cuid())
-  title             String
-  entity            String    @default("ANIMATION_HUB") // PERSONAL, ANIMATION_HUB, FOUNDATION
-  type              String    // PARTNERSHIP, GRANT, SPEAKING, INVESTOR, CLIENT, MEDIA
-  whyItMatters      String
-  potentialValue    String?
-  relevanceAdetun   Int       @default(90) // 1-100
-  recommendedAction String
-  deadline          DateTime?
-  contactName       String?
-  contactInfo       String?
-  source            String
-  status            String    @default("NEW") // NEW, REVIEWED, PURSUING, WON, ARCHIVED
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+model SourceDocument {
+  id          String    @id
+  sourceId    String
+  contentHash String
+  cleanText   String
+  rawHtml     String?
+  httpStatus  Int       @default(200)
+  fetchedAt   DateTime  @default(now())
+  WebSource   WebSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
 }
 
-model RelationshipFollowUp {
-  id                  String    @id @default(cuid())
-  personName          String
-  company             String
-  role                String?
-  lastInteractionDate DateTime  @default(now())
-  nextFollowUpDate    DateTime?
-  commitmentsByAdetun String?   // What Adetunwase promised to do
-  commitmentsByThem   String?   // What the counterparty promised to do (e.g. "Send contract")
-  waitingOnThem       Boolean   @default(false)
-  status              String    @default("PENDING") // PENDING, COMPLETED, ARCHIVED
-  notes               String?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+model VerifiedFact {
+  id           String       @id
+  orgId        String
+  factText     String
+  category     String
+  status       FactStatus   @default(VERIFIED)
+  sourceTitle  String
+  approvedBy   String       @default("Administrator")
+  confidence   Int          @default(98)
+  updatedAt    DateTime
+  createdAt    DateTime     @default(now())
+  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
-model DecisionRecord {
-  id             String    @id @default(cuid())
-  topic          String
-  optionA        String
-  optionB        String
-  criteriaJson   String    // JSON: cost, time, risk, upside, strategicAlignment, complexity
-  recommendation String
-  rationale      String
-  status         String    @default("DECIDED") // DECIDED, EVALUATING
-  entity         String    @default("PERSONAL")
-  decidedAt      DateTime  @default(now())
+model WebFact {
+  id             String        @id
+  subject        String        @default("SLUMART")
+  factText       String
+  category       String        @default("organization_history")
+  sourceId       String?
+  sourceUrl      String
+  sourceType     String        @default("media")
+  confidence     Float         @default(0.92)
+  status         String        @default("PUBLICLY_REPORTED")
+  sourceDate     String?
+  created_at     DateTime      @default(now())
+  lastVerifiedAt DateTime      @default(now())
+  conflictId     String?
+  FactConflict   FactConflict? @relation(fields: [conflictId], references: [id])
+  WebSource      WebSource?    @relation(fields: [sourceId], references: [id])
 }
 
-model StrategicRoadmap {
-  id                    String   @id @default(cuid())
-  entity                String   @default("ANIMATION_HUB")
-  title                 String
-  objective             String
-  currentState          String
-  roadmap12MonthJson    String   // JSON: 12-month phases
-  quarterlyGoalsJson    String   // JSON: Q1-Q4 goals
-  monthlyMilestonesJson String   // JSON: M1-M12 milestones
-  keyMetricsJson        String   // JSON: metrics
-  requiredResourcesJson String   // JSON: resources/budget
-  next7DaysJson         String   // JSON: immediate actions
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+model WebSource {
+  id                 String           @id
+  url                String           @unique
+  title              String
+  domain             String
+  sourceType         String           @default("media")
+  tier               Int              @default(2)
+  credibilityScore   Int              @default(85)
+  lastCrawledAt      DateTime?
+  status             String           @default("ACTIVE")
+  factsCount         Int              @default(0)
+  adminOverrideScore Int?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime
+  SourceDocument     SourceDocument[]
+  WebFact            WebFact[]
 }
 
-model OperationsReview {
-  id                String   @id @default(cuid())
-  date              String   // YYYY-MM-DD
-  type              String   // DAILY_OPS, END_OF_DAY, WEEKLY
-  prioritiesJson    String   // JSON array
-  overdueJson       String   // JSON array
-  bottlenecksJson   String   // JSON array
-  healthSummaryJson String   // JSON object
-  blindSpotsJson    String   // JSON array
-  aiReflection      String
-  createdAt         DateTime @default(now())
+enum EmailCategory {
+  GRANT_OPPORTUNITY
+  PARTNERSHIP
+  FUNDING
+  IMPORTANT
+  EVENT
+  MEDIA
+  GENERAL
+  URGENT
 }
 
+enum EmailStatus {
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  SENT
+}
+
+enum FactStatus {
+  VERIFIED
+  NEEDS_REVIEW
+  REJECTED
+  PUBLIC_SOURCE
+}
+
+enum GrantCategory {
+  CAN_PREPARE
+  ADMIN_REVIEW
+  NOT_A_MATCH
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
