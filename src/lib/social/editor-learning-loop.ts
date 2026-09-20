@@ -84,8 +84,9 @@ export async function recordHumanEdit(item: EditorFeedbackItem) {
   const editedLength = editedCaption.length;
   const isShortened = editedLength < originalLength * 0.85;
 
-  const originalEmojiCount = (originalAiCaption.match(/[\u{1F300}-\u{1F9FF}]/gu) || []).length;
-  const editedEmojiCount = (editedCaption.match(/[\u{1F300}-\u{1F9FF}]/gu) || []).length;
+  const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+  const originalEmojiCount = (originalAiCaption.match(emojiRegex) || []).length;
+  const editedEmojiCount = (editedCaption.match(emojiRegex) || []).length;
   const removedEmojis = originalEmojiCount > 0 && editedEmojiCount === 0;
 
   // Use LLM to analyze the editorial rationale

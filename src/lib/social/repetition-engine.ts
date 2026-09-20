@@ -41,9 +41,9 @@ function calculateJaccardSimilarity(textA: string, textB: string): number {
   if (setA.size === 0 || setB.size === 0) return 0;
 
   let intersection = 0;
-  for (const item of setA) {
+  setA.forEach((item) => {
     if (setB.has(item)) intersection++;
-  }
+  });
 
   const union = setA.size + setB.size - intersection;
   return union > 0 ? intersection / union : 0;

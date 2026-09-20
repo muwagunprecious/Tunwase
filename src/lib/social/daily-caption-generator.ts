@@ -41,7 +41,7 @@ async function callGroqWithFallback(messages: any[], temperature = 0.65) {
           model: "qwen/qwen3.8-27b",
           messages,
           temperature,
-          max_completion_tokens: 800,
+          max_tokens: 800,
           response_format: { type: "json_object" }
         });
       } catch (fallbackErr: any) {
@@ -51,7 +51,7 @@ async function callGroqWithFallback(messages: any[], temperature = 0.65) {
             model: "llama-3.3-70b-versatile",
             messages,
             temperature,
-            max_completion_tokens: 800,
+            max_tokens: 800,
             response_format: { type: "json_object" }
           });
         }
