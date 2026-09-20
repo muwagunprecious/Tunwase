@@ -27,25 +27,25 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex-1 p-6 md:p-10 max-w-4xl mx-auto w-full space-y-8">
+    <div className="flex-1 p-4 sm:p-6 md:p-10 max-w-4xl mx-auto w-full space-y-6 sm:space-y-8 bg-slate-50 min-h-screen text-slate-900">
       {/* Header */}
-      <div className="border-b border-[#1e222a] pb-6">
+      <div className="border-b border-slate-200 pb-6">
         <div className="flex items-center gap-2 text-amber-500 text-xs font-semibold uppercase tracking-wider mb-1">
           <Settings className="w-4 h-4" />
           System Settings & Guardrails
         </div>
-        <h1 className="text-2xl font-bold text-neutral-100">Executive Engine Settings</h1>
-        <p className="text-xs text-neutral-400 mt-1">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Executive Engine Settings</h1>
+        <p className="text-xs text-slate-600 mt-1">
           Manage AI models, privacy boundaries, autonomous intelligence, and voice protection rules.
         </p>
       </div>
 
       {/* AI Intelligence Provider Box */}
-      <div className="p-6 rounded-2xl bg-[#13161c] border border-[#222834] space-y-4">
-        <div className="flex items-center justify-between border-b border-[#202530] pb-3">
+      <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-amber-500" />
-            <h2 className="text-sm font-semibold text-neutral-200">LLM Provider & Orchestration</h2>
+            <h2 className="text-sm font-semibold text-slate-900">LLM Provider & Orchestration</h2>
           </div>
           <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 font-medium">
             Connected
@@ -53,12 +53,12 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-3 text-xs">
-          <div className="p-3 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-400 text-[10px] uppercase font-bold block">
+              <span className="text-slate-600 text-[10px] uppercase font-bold block">
                 Primary Model
               </span>
-              <span className="text-neutral-200 font-semibold text-xs">
+              <span className="text-slate-800 font-semibold text-xs">
                 Groq Llama-3.3-70b-versatile (Ultra-Fast Inference)
               </span>
             </div>
@@ -67,12 +67,12 @@ export default function SettingsPage() {
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-400 text-[10px] uppercase font-bold block">
+              <span className="text-slate-600 text-[10px] uppercase font-bold block">
                 Groq API Key
               </span>
-              <span className="text-neutral-300 font-mono text-xs">
+              <span className="text-slate-700 font-mono text-xs">
                 Configured through GROQ_API_KEY (hidden)
               </span>
             </div>
@@ -85,21 +85,21 @@ export default function SettingsPage() {
       </div>
 
       {/* Strict Voice & Policy Guardrails */}
-      <div className="p-6 rounded-2xl bg-[#13161c] border border-[#222834] space-y-4">
-        <div className="flex items-center justify-between border-b border-[#202530] pb-3">
+      <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <h2 className="text-sm font-semibold text-neutral-200">Strict Voice & Style Rules</h2>
+            <h2 className="text-sm font-semibold text-slate-900">Strict Voice & Style Rules</h2>
           </div>
         </div>
 
         <div className="space-y-3 text-xs">
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Strict Zero Em-Dash Enforcement
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Automatically rejects or converts all em dashes (—) to commas, colons, or clean sentence breaks.
               </span>
             </div>
@@ -111,12 +111,12 @@ export default function SettingsPage() {
             />
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Anti-AI Corporate Cliche Eliminator
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Strips robotic phrases like "delve into", "in today's rapidly evolving landscape", and "beacon of hope".
               </span>
             </div>
@@ -125,12 +125,12 @@ export default function SettingsPage() {
             </span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Ethical Public B2B Contact Verification
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Restricts research to verified public corporate websites and directories. Never bypasses logins or harvests personal private phone numbers.
               </span>
             </div>
@@ -142,23 +142,23 @@ export default function SettingsPage() {
       </div>
 
       {/* Proactive Intelligence Toggles */}
-      <div className="p-6 rounded-2xl bg-[#13161c] border border-[#222834] space-y-4">
-        <div className="flex items-center justify-between border-b border-[#202530] pb-3">
+      <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <Bell className="w-4 h-4 text-amber-500" />
-            <h2 className="text-sm font-semibold text-neutral-200">
+            <h2 className="text-sm font-semibold text-slate-900">
               Proactive Assistant Intelligence
             </h2>
           </div>
         </div>
 
         <div className="space-y-3 text-xs">
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Automated Daily Morning Briefing
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Pre-generates 3 key news, 2 trends, and ready-to-post drafts for review every morning at 7:00 AM.
               </span>
             </div>
@@ -170,12 +170,12 @@ export default function SettingsPage() {
             />
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Content Fatigue Warning System
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Warns when Adetunwase has posted too frequently about one entity or topic in recent days.
               </span>
             </div>
@@ -187,12 +187,12 @@ export default function SettingsPage() {
             />
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#161a22] border border-[#242b36] flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
             <div>
-              <span className="text-neutral-200 font-semibold block">
+              <span className="text-slate-800 font-semibold block">
                 Continuous Cultural & Tech Trend Radar
               </span>
-              <span className="text-neutral-400 text-[11px] block mt-0.5">
+              <span className="text-slate-600 text-[11px] block mt-0.5">
                 Evaluates African animation and creative tech developments against Adetunwase's brand fit.
               </span>
             </div>

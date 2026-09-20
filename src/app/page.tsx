@@ -237,19 +237,19 @@ What would you like to work on right now?`,
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0d0f12]">
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
       {/* Executive Header */}
-      <header className="px-6 py-3.5 border-b border-[#1e222a] bg-[#111317]/80 backdrop-blur flex items-center justify-between shrink-0">
+      <header className="px-4 sm:px-6 py-3.5 border-b border-slate-200 bg-white/90 backdrop-blur flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20 animate-pulse" />
           <div>
-            <h1 className="text-sm font-semibold text-neutral-100 flex items-center gap-2">
+            <h1 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               Adetunwase Executive Assistant
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
                 Online
               </span>
             </h1>
-            <p className="text-[11px] text-neutral-400">
+            <p className="text-[11px] text-slate-500">
               Personal Brand • Animation Hub • Foundation
             </p>
           </div>
@@ -261,8 +261,8 @@ What would you like to work on right now?`,
             onClick={() => setIsDebugMode(!isDebugMode)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all border ${
               isDebugMode
-                ? "bg-amber-500/15 border-amber-500/40 text-amber-300"
-                : "bg-[#161a22] border-[#252b38] text-neutral-400 hover:text-neutral-200"
+                ? "bg-amber-50 border-amber-300 text-amber-800 font-semibold"
+                : "bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50"
             }`}
             title="Toggle Developer Debug Mode (Raw text, AST inspector, token breakdown)"
           >
@@ -270,7 +270,7 @@ What would you like to work on right now?`,
             <span className="hidden sm:inline">Debug Inspector</span>
             <span
               className={`text-[9px] px-1.5 py-0.2 rounded font-semibold uppercase ${
-                isDebugMode ? "bg-amber-500 text-black" : "bg-neutral-800 text-neutral-400"
+                isDebugMode ? "bg-amber-500 text-black" : "bg-slate-100 text-slate-600"
               }`}
             >
               {isDebugMode ? "On" : "Off"}
@@ -280,7 +280,7 @@ What would you like to work on right now?`,
       </header>
 
       {/* Main Conversation Stream */}
-      <div className="flex-1 overflow-y-auto px-4 md:px-12 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-3 sm:px-6 md:px-12 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {messages.length === 1 && (
           <div className="max-w-3xl mx-auto my-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -290,17 +290,17 @@ What would you like to work on right now?`,
                   <button
                     key={idx}
                     onClick={() => handleSend(item.prompt)}
-                    className="p-3.5 rounded-xl bg-[#13161c] hover:bg-[#181d26] border border-[#222834] hover:border-amber-500/40 text-left transition-all group shadow-sm hover:shadow"
+                    className="p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-amber-400 text-left transition-all group shadow-2xs hover:shadow-xs"
                   >
                     <div className="flex items-center gap-2 mb-1.5">
                       <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors">
                         <Icon className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-xs font-semibold text-neutral-200 group-hover:text-white transition-colors">
+                      <span className="text-xs font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">
                         {item.title}
                       </span>
                     </div>
-                    <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                       {item.prompt}
                     </p>
                   </button>
@@ -320,7 +320,7 @@ What would you like to work on right now?`,
               }`}
             >
               {!isUser && (
-                <div className="w-8 h-8 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 font-bold text-xs shrink-0 mt-1 shadow-2xs">
                   AA
                 </div>
               )}
@@ -331,7 +331,7 @@ What would you like to work on right now?`,
                   className={`p-4 rounded-2xl text-sm leading-relaxed ${
                     isUser
                       ? "bg-amber-600 text-white rounded-br-sm shadow-md"
-                      : "bg-[#13171f] border border-[#222834] text-neutral-200 rounded-bl-sm"
+                      : "bg-white border border-slate-200 text-slate-900 rounded-bl-sm shadow-xs"
                   }`}
                 >
                   {isUser ? (
@@ -346,7 +346,7 @@ What would you like to work on right now?`,
 
                   {/* Assistant Actions Bar: ChatGPT-style */}
                   {!isUser && (
-                    <div className="mt-3.5 pt-2.5 border-t border-[#222835] flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-400">
+                    <div className="mt-3.5 pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                       {/* Left: Tools Used */}
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {m.toolsUsed && m.toolsUsed.length > 0 && (
@@ -354,7 +354,7 @@ What would you like to work on right now?`,
                             {m.toolsUsed.map((tool, tIdx) => (
                               <span
                                 key={tIdx}
-                                className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-[#1a202a] text-neutral-400 border border-[#28313f]"
+                                className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-200"
                               >
                                 <Sparkles className="w-2.5 h-2.5 text-amber-400" />
                                 {tool}
@@ -369,7 +369,7 @@ What would you like to work on right now?`,
                         {/* Copy Button */}
                         <button
                           onClick={() => copyText(m.id, m.content)}
-                          className="p-1.5 rounded hover:bg-[#1e2531] hover:text-neutral-200 text-neutral-400 transition-colors flex items-center gap-1 text-[11px]"
+                          className="p-1.5 rounded hover:bg-slate-100 hover:text-slate-900 text-slate-500 transition-colors flex items-center gap-1 text-[11px]"
                           title="Copy response"
                         >
                           {copiedId === m.id ? (
@@ -389,7 +389,7 @@ What would you like to work on right now?`,
                         <button
                           onClick={() => handleRegenerate(m.id)}
                           disabled={isLoading}
-                          className="p-1.5 rounded hover:bg-[#1e2531] hover:text-neutral-200 text-neutral-400 transition-colors flex items-center gap-1 text-[11px] disabled:opacity-40"
+                          className="p-1.5 rounded hover:bg-slate-100 hover:text-slate-900 text-slate-500 transition-colors flex items-center gap-1 text-[11px] disabled:opacity-40"
                           title="Regenerate this response"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
@@ -425,7 +425,7 @@ What would you like to work on right now?`,
                         {/* Share Button */}
                         <button
                           onClick={() => handleShare(m.id, m.content)}
-                          className="p-1.5 rounded hover:bg-[#1e2531] hover:text-neutral-200 text-neutral-400 transition-colors"
+                          className="p-1.5 rounded hover:bg-slate-100 hover:text-slate-900 text-slate-500 transition-colors"
                           title="Share response"
                         >
                           {sharedId === m.id ? (
@@ -463,7 +463,7 @@ What would you like to work on right now?`,
                           Researched Executive Profile: {m.contactDossier.targetName}
                         </span>
                       </div>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 font-medium">
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
                         Public Domain Verified
                       </span>
                     </div>
@@ -499,8 +499,8 @@ What would you like to work on right now?`,
 
                 {/* Sources & Citations if present */}
                 {!isUser && m.sources && m.sources.length > 0 && (
-                  <div className="p-3 rounded-xl bg-[#11141a] border border-[#222732] space-y-2">
-                    <div className="text-[11px] font-semibold text-neutral-400 flex items-center gap-1.5 uppercase tracking-wider">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5 uppercase tracking-wider">
                       <Globe className="w-3.5 h-3.5 text-blue-400" />
                       Verified Primary Sources ({m.sources.length})
                     </div>
@@ -511,13 +511,13 @@ What would you like to work on right now?`,
                           href={s.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center justify-between p-2 rounded-lg bg-[#151922] hover:bg-[#1a202b] border border-[#232936] text-xs transition-colors group"
+                          className="flex items-center justify-between p-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-xs transition-colors group shadow-2xs"
                         >
                           <div className="truncate flex-1 pr-2">
-                            <span className="text-neutral-200 group-hover:text-amber-400 transition-colors">
+                            <span className="text-slate-800 group-hover:text-amber-700 transition-colors">
                               {s.title}
                             </span>
-                            <span className="text-neutral-500 text-[10px] ml-2">
+                            <span className="text-slate-500 text-[10px] ml-2">
                               {s.sourceName} • {s.date}
                             </span>
                           </div>
@@ -526,7 +526,7 @@ What would you like to work on right now?`,
                               className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
                                 s.confidence === "High"
                                     ? "bg-emerald-950/60 text-emerald-400 border border-emerald-800/40"
-                                    : "bg-amber-950/60 text-amber-400 border border-amber-800/40"
+                                    : "bg-amber-50 text-amber-800 border border-amber-200"
                               }`}
                             >
                               {s.confidence} Confidence
@@ -546,7 +546,7 @@ What would you like to work on right now?`,
                       <button
                         key={aIdx}
                         onClick={() => handleSend(act)}
-                        className="text-[11px] px-2.5 py-1 rounded-full bg-[#161a22] hover:bg-[#1e2430] border border-[#252b38] hover:border-amber-500/40 text-neutral-300 hover:text-white transition-colors flex items-center gap-1.5"
+                        className="text-[11px] px-2.5 py-1 rounded-full bg-white hover:bg-amber-50 border border-slate-200 hover:border-amber-300 text-slate-700 hover:text-amber-900 transition-colors flex items-center gap-1.5 shadow-2xs"
                       >
                         <span>{act}</span>
                         <ArrowRight className="w-2.5 h-2.5 text-amber-400" />
@@ -557,7 +557,7 @@ What would you like to work on right now?`,
               </div>
 
               {isUser && (
-                <div className="w-8 h-8 rounded-full bg-neutral-700 flex items-center justify-center text-neutral-200 font-bold text-xs shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 border border-slate-300 font-bold text-xs shrink-0 mt-1">
                   Me
                 </div>
               )}
@@ -571,13 +571,13 @@ What would you like to work on right now?`,
             <div className="w-8 h-8 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs shrink-0">
               AA
             </div>
-            <div className="p-4 rounded-2xl bg-[#13171f] border border-[#222834] text-sm text-neutral-300 flex items-center gap-3">
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 text-sm text-slate-700 flex items-center gap-3 shadow-xs">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: "0ms" }} />
                 <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: "150ms" }} />
                 <span className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
-              <span className="text-xs text-neutral-400">
+              <span className="text-xs text-slate-500">
                 Synthesizing executive context & formatting response...
               </span>
             </div>
@@ -588,7 +588,7 @@ What would you like to work on right now?`,
       </div>
 
       {/* Composer Input Bar */}
-      <div className="p-4 border-t border-[#1e222a] bg-[#111317]/90 backdrop-blur shrink-0">
+      <div className="p-3 sm:p-4 border-t border-slate-200 bg-white/95 backdrop-blur shrink-0 shadow-xs">
         <div className="max-w-3xl mx-auto space-y-2">
           <form
             onSubmit={(e) => {
@@ -603,7 +603,7 @@ What would you like to work on right now?`,
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything, request research, or drop today's context..."
-              className="w-full bg-[#151921] border border-[#252b37] focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 pr-24 text-sm text-neutral-100 placeholder-neutral-500 outline-none transition-all shadow-inner"
+              className="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-4 py-3 pr-24 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all shadow-2xs"
             />
             <div className="absolute right-2 flex items-center gap-1.5">
               <button
@@ -621,7 +621,7 @@ What would you like to work on right now?`,
             <div className="flex items-center gap-2">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500" />
               <span>
-                Autonomous Em-Dash Eliminator: <strong className="text-neutral-200">Active</strong>
+                Autonomous Em-Dash Eliminator: <strong className="text-slate-800">Active</strong>
               </span>
             </div>
             <div className="flex items-center gap-3">

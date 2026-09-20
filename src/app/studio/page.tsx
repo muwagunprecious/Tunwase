@@ -141,16 +141,16 @@ export default function ContentStudioPage() {
   };
 
   return (
-    <div className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full space-y-8">
+    <div className="flex-1 p-4 sm:p-6 md:p-10 max-w-6xl mx-auto w-full space-y-6 sm:space-y-8 bg-slate-50 min-h-screen text-slate-900">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1e222a] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div>
           <div className="flex items-center gap-2 text-amber-500 text-xs font-semibold uppercase tracking-wider mb-1">
             <PenTool className="w-4 h-4" />
             Executive Content Studio
           </div>
-          <h1 className="text-2xl font-bold text-neutral-100">Content Pipeline</h1>
-          <p className="text-xs text-neutral-400 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Content Pipeline</h1>
+          <p className="text-xs text-slate-600 mt-1">
             Multi-platform generation tailored for Adetunwase's authentic voice. Strictly no em dashes.
           </p>
         </div>
@@ -165,7 +165,7 @@ export default function ContentStudioPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 rounded-xl bg-[#13161c] border border-[#222834] flex flex-wrap items-center justify-between gap-4">
+      <div className="p-4 rounded-xl bg-[#13161c] border border-slate-200 flex flex-wrap items-center justify-between gap-4">
         {/* Platform Tabs */}
         <div className="flex items-center gap-1 bg-[#171b22] p-1 rounded-lg border border-[#262c38] text-xs">
           {["ALL", "LINKEDIN", "X", "INSTAGRAM", "FACEBOOK"].map((p) => (
@@ -175,7 +175,7 @@ export default function ContentStudioPage() {
               className={`px-3 py-1.5 rounded-md font-medium transition-all ${
                 selectedPlatform === p
                   ? "bg-amber-600 text-white shadow-sm"
-                  : "text-neutral-400 hover:text-neutral-200"
+                  : "text-slate-600 hover:text-slate-800"
               }`}
             >
               {p}
@@ -185,7 +185,7 @@ export default function ContentStudioPage() {
 
         {/* Entity Tabs */}
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-neutral-500 text-[11px] uppercase font-semibold">Entity:</span>
+          <span className="text-slate-500 text-[11px] uppercase font-semibold">Entity:</span>
           {["ALL", "PERSONAL", "ANIMATION_HUB", "FOUNDATION"].map((e) => (
             <button
               key={e}
@@ -193,7 +193,7 @@ export default function ContentStudioPage() {
               className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
                 selectedEntity === e
                   ? "bg-[#252c38] text-amber-400 border border-amber-500/40"
-                  : "bg-[#161a22] text-neutral-400 border border-[#242b36] hover:text-neutral-200"
+                  : "bg-[#161a22] text-slate-600 border border-[#242b36] hover:text-slate-800"
               }`}
             >
               {e === "PERSONAL" ? "Personal" : e === "ANIMATION_HUB" ? "Animation Hub" : e === "FOUNDATION" ? "Foundation" : "All"}
@@ -203,7 +203,7 @@ export default function ContentStudioPage() {
 
         {/* Status Tabs */}
         <div className="flex items-center gap-1.5 text-xs">
-          <span className="text-neutral-500 text-[11px] uppercase font-semibold">Status:</span>
+          <span className="text-slate-500 text-[11px] uppercase font-semibold">Status:</span>
           {["ALL", "Draft", "Approved", "Scheduled", "Published"].map((s) => (
             <button
               key={s}
@@ -211,7 +211,7 @@ export default function ContentStudioPage() {
               className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
                 selectedStatus === s
                   ? "bg-neutral-200 text-neutral-900"
-                  : "text-neutral-400 hover:text-neutral-200"
+                  : "text-slate-600 hover:text-slate-800"
               }`}
             >
               {s}
@@ -223,16 +223,16 @@ export default function ContentStudioPage() {
       {/* Drafts Grid */}
       {isLoading ? (
         <div className="py-20 flex items-center justify-center">
-          <div className="flex items-center gap-3 text-neutral-400 text-xs">
+          <div className="flex items-center gap-3 text-slate-600 text-xs">
             <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
             <span>Loading content pipeline...</span>
           </div>
         </div>
       ) : drafts.length === 0 ? (
-        <div className="py-20 text-center rounded-2xl bg-[#13161c] border border-[#222834] p-8 space-y-3">
+        <div className="py-20 text-center rounded-2xl bg-[#13161c] border border-slate-200 p-8 space-y-3">
           <PenTool className="w-8 h-8 text-neutral-600 mx-auto" />
-          <h3 className="text-sm font-semibold text-neutral-300">No content drafts found</h3>
-          <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+          <h3 className="text-sm font-semibold text-slate-700">No content drafts found</h3>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
             Click "Generate New Post" or ask your assistant in Chat to create a high-impact thought piece.
           </p>
         </div>
@@ -241,12 +241,12 @@ export default function ContentStudioPage() {
           {drafts.map((d) => (
             <div
               key={d.id}
-              className="p-5 rounded-2xl bg-[#13161c] border border-[#222834] flex flex-col justify-between space-y-4 hover:border-[#2f3747] transition-all group"
+              className="p-5 rounded-2xl bg-[#13161c] border border-slate-200 flex flex-col justify-between space-y-4 hover:border-[#2f3747] transition-all group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider bg-neutral-800 text-neutral-300 border border-neutral-700">
+                    <span className="text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider bg-neutral-800 text-slate-700 border border-neutral-700">
                       {d.platform}
                     </span>
                     <span className="text-[10px] px-2 py-0.5 rounded font-medium bg-[#1a202a] text-amber-400 border border-[#27303e]">
@@ -264,22 +264,22 @@ export default function ContentStudioPage() {
                         ? "bg-emerald-950/60 text-emerald-400 border-emerald-800/40"
                         : d.status === "Published"
                         ? "bg-blue-950/60 text-blue-400 border-blue-800/40"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700/40"
+                        : "bg-neutral-800/60 text-slate-600 border-neutral-700/40"
                     }`}
                   >
                     {d.status}
                   </span>
                 </div>
 
-                <h3 className="text-xs font-semibold text-neutral-200">{d.topic}</h3>
+                <h3 className="text-xs font-semibold text-slate-800">{d.topic}</h3>
 
-                <div className="text-xs text-neutral-300 leading-relaxed bg-[#161a22] p-3.5 rounded-xl border border-[#242b36]">
+                <div className="text-xs text-slate-700 leading-relaxed bg-[#161a22] p-3.5 rounded-xl border border-[#242b36]">
                   <MarkdownRenderer content={d.content} />
                 </div>
 
                 {d.visualSuggestion && (
-                  <div className="p-2.5 rounded-lg bg-[#151921] border border-[#232936] text-[11px] text-neutral-400">
-                    <strong className="text-neutral-300">Visual Concept: </strong>
+                  <div className="p-2.5 rounded-lg bg-[#151921] border border-[#232936] text-[11px] text-slate-600">
+                    <strong className="text-slate-700">Visual Concept: </strong>
                     {d.visualSuggestion}
                   </div>
                 )}
@@ -290,34 +290,34 @@ export default function ContentStudioPage() {
               </div>
 
               {/* Polish & Action Buttons */}
-              <div className="space-y-3 pt-3 border-t border-[#222834]">
+              <div className="space-y-3 pt-3 border-t border-slate-200">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] text-neutral-500 font-semibold uppercase mr-1">
+                  <span className="text-[10px] text-slate-500 font-semibold uppercase mr-1">
                     Polish:
                   </span>
                   <button
                     onClick={() => handlePolish(d.id, "make-human")}
-                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-neutral-300 transition-colors flex items-center gap-1"
+                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-slate-700 transition-colors flex items-center gap-1"
                   >
                     <Wand2 className="w-2.5 h-2.5 text-amber-400" />
                     Make More Human
                   </button>
                   <button
                     onClick={() => handlePolish(d.id, "remove-em-dashes")}
-                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-neutral-300 transition-colors flex items-center gap-1"
+                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-slate-700 transition-colors flex items-center gap-1"
                   >
                     <ShieldCheck className="w-2.5 h-2.5 text-emerald-400" />
                     Zero Em Dashes
                   </button>
                   <button
                     onClick={() => handlePolish(d.id, "shorten")}
-                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-neutral-300 transition-colors"
+                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-slate-700 transition-colors"
                   >
                     Shorten
                   </button>
                   <button
                     onClick={() => handlePolish(d.id, "personalize")}
-                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-neutral-300 transition-colors"
+                    className="text-[10px] px-2 py-1 rounded bg-[#181d26] hover:bg-[#222936] border border-[#272f3e] text-slate-700 transition-colors"
                   >
                     Add Story
                   </button>
@@ -341,7 +341,7 @@ export default function ContentStudioPage() {
 
                   <button
                     onClick={() => copyDraft(d.id, d.content)}
-                    className="px-3 py-1.5 rounded-lg bg-[#1a1f29] hover:bg-[#242b38] border border-[#293242] text-neutral-200 text-xs font-medium flex items-center gap-1.5 transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-[#1a1f29] hover:bg-[#242b38] border border-[#293242] text-slate-800 text-xs font-medium flex items-center gap-1.5 transition-colors"
                   >
                     {copiedId === d.id ? (
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
@@ -362,13 +362,13 @@ export default function ContentStudioPage() {
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-lg rounded-2xl bg-[#14171f] border border-[#242b38] p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-neutral-100 flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-500" />
                 Autonomous Content Generator
               </h3>
               <button
                 onClick={() => setShowGenModal(false)}
-                className="text-neutral-500 hover:text-neutral-300 text-xs font-medium"
+                className="text-slate-500 hover:text-slate-700 text-xs font-medium"
               >
                 Cancel
               </button>
@@ -376,7 +376,7 @@ export default function ContentStudioPage() {
 
             <form onSubmit={handleGenerate} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-semibold text-neutral-400 uppercase mb-1">
+                <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">
                   Topic or Core Message
                 </label>
                 <input
@@ -385,19 +385,19 @@ export default function ContentStudioPage() {
                   value={genTopic}
                   onChange={(e) => setGenTopic(e.target.value)}
                   placeholder="e.g. Training 100 new animators in Lagos or breaking world records"
-                  className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-neutral-100 outline-none"
+                  className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold text-neutral-400 uppercase mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">
                     Platform
                   </label>
                   <select
                     value={genPlatform}
                     onChange={(e) => setGenPlatform(e.target.value)}
-                    className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-neutral-200 outline-none"
+                    className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-slate-800 outline-none"
                   >
                     <option value="LINKEDIN">LinkedIn</option>
                     <option value="X">X (Twitter)</option>
@@ -407,13 +407,13 @@ export default function ContentStudioPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-neutral-400 uppercase mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">
                     Entity Namespace
                   </label>
                   <select
                     value={genEntity}
                     onChange={(e) => setGenEntity(e.target.value)}
-                    className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-neutral-200 outline-none"
+                    className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-slate-800 outline-none"
                   >
                     <option value="PERSONAL">Adetunwase (Personal)</option>
                     <option value="ANIMATION_HUB">Animation Hub</option>
@@ -423,7 +423,7 @@ export default function ContentStudioPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-neutral-400 uppercase mb-1">
+                <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">
                   Additional Personal Context (Optional)
                 </label>
                 <textarea
@@ -431,7 +431,7 @@ export default function ContentStudioPage() {
                   value={genContext}
                   onChange={(e) => setGenContext(e.target.value)}
                   placeholder="e.g. Had a meeting today with a streaming executive; mention our focus on original African folklore IP."
-                  className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-neutral-100 outline-none resize-none"
+                  className="w-full bg-[#181d26] border border-[#272f3e] focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none resize-none"
                 />
               </div>
 
@@ -439,7 +439,7 @@ export default function ContentStudioPage() {
                 <button
                   type="button"
                   onClick={() => setShowGenModal(false)}
-                  className="px-4 py-2 rounded-xl bg-[#181d26] hover:bg-[#202733] border border-[#262f3e] text-neutral-300 text-xs font-medium"
+                  className="px-4 py-2 rounded-xl bg-[#181d26] hover:bg-[#202733] border border-[#262f3e] text-slate-700 text-xs font-medium"
                 >
                   Cancel
                 </button>
