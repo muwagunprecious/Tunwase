@@ -135,7 +135,7 @@ Return JSON in this format:
           entity: targetEntity,
           topic: topic || "African Creative Excellence",
           hook: parsed.hook || "",
-          content: cleaned.polished,
+          content: cleaned.polished || postText || "Draft content.",
           visualSuggestion: parsed.visualSuggestion || "Behind-the-scenes studio photo or workshop moment",
           cta: parsed.cta || "What are your thoughts on this?",
           hashtags: parsed.hashtags || "#CreativeAfrica #AnimationHub #AdetunwaseAdenle",

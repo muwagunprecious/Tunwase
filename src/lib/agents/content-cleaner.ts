@@ -33,14 +33,38 @@ const BANNED_PHRASES = [
 ];
 
 const REPLACEMENTS: Array<{ regex: RegExp; replacement: string }> = [
-  { regex: /\bdelve into\b/gi, replacement: "explore" },
+  { regex: /\bdelve into\b/gi, replacement: "look into" },
+  { regex: /\bdelving into\b/gi, replacement: "looking into" },
   { regex: /\bin today's rapidly evolving landscape\b/gi, replacement: "today" },
-  { regex: /\bin today's fast-paced world\b/gi, replacement: "in our current world" },
-  { regex: /\bit is important to note\b/gi, replacement: "notice" },
-  { regex: /\brevolutionary paradigm shift\b/gi, replacement: "major shift" },
-  { regex: /\bunlock unprecedented potential\b/gi, replacement: "open real opportunities" },
+  { regex: /\bin today's fast-paced world\b/gi, replacement: "these days" },
+  { regex: /\bit is important to note\b/gi, replacement: "note" },
+  { regex: /\bit's important to remember\b/gi, replacement: "remember" },
+  { regex: /\brevolutionary paradigm shift\b/gi, replacement: "big change" },
+  { regex: /\bunlock unprecedented potential\b/gi, replacement: "open up great chances" },
   { regex: /\btestament to\b/gi, replacement: "proof of" },
   { regex: /\bharness the power of\b/gi, replacement: "use" },
+  { regex: /\bfacilitate\b/gi, replacement: "help with" },
+  { regex: /\bfacilitating\b/gi, replacement: "helping with" },
+  { regex: /\bleverage\b/gi, replacement: "use" },
+  { regex: /\bleveraging\b/gi, replacement: "using" },
+  { regex: /\butilize\b/gi, replacement: "use" },
+  { regex: /\butilizing\b/gi, replacement: "using" },
+  { regex: /\butilization\b/gi, replacement: "use" },
+  { regex: /\bcommence\b/gi, replacement: "start" },
+  { regex: /\bcommencing\b/gi, replacement: "starting" },
+  { regex: /\bsubsequently\b/gi, replacement: "then" },
+  { regex: /\bfurthermore\b/gi, replacement: "also" },
+  { regex: /\bmoreover\b/gi, replacement: "also" },
+  { regex: /\bparamount\b/gi, replacement: "vital" },
+  { regex: /\bmeticulous\b/gi, replacement: "careful" },
+  { regex: /\bmeticulously\b/gi, replacement: "carefully" },
+  { regex: /\borchestrate\b/gi, replacement: "organize" },
+  { regex: /\borchestrating\b/gi, replacement: "organizing" },
+  { regex: /\bdispatched\b/gi, replacement: "sent" },
+  { regex: /\bimperative\b/gi, replacement: "important" },
+  { regex: /\bin order to\b/gi, replacement: "to" },
+  { regex: /\bat this point in time\b/gi, replacement: "right now" },
+  { regex: /\bprior to\b/gi, replacement: "before" },
 ];
 
 /**
@@ -54,7 +78,13 @@ export function normalizeUnicode(text: string): string {
     // Replace non-breaking hyphen and figure dashes with standard hyphen
     .replace(/[\u2010\u2011\u2012]/g, "-")
     // Replace horizontal bar and quotation dashes
-    .replace(/[\u2015]/g, "-");
+    .replace(/[\u2015]/g, "-")
+    // Replace curly single quotes and apostrophes with ASCII single quote
+    .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+    // Replace curly double quotes with ASCII double quote
+    .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+    // Replace multiplication symbol with ASCII x
+    .replace(/[\u00D7]/g, "x");
 }
 
 /**
@@ -130,33 +160,25 @@ export function removeEmDashes(text: string): string {
 }
 
 /**
- * Format and structure AI text to ensure it is clean, executive-grade, and beautifully presented.
- * 1. Turns isolated bold title lines into clean Markdown headings (### Title).
- * 2. Replaces asterisk bullet points (* item) with clean hyphens (- item).
- * 3. Fixes punctuation-adjacent italics like *‘word’* to ‘word’.
- * 4. Ensures clean vertical spacing between sections.
+ * Format text without forcing rigid structure or markdown headers.
+ * Keeps short and one-word replies clean and untouched.
  */
 export function structureAiText(text: string): string {
   if (!text) return "";
 
-  let structured = text;
+  const trimmed = text.trim();
+  // If it's a one-word or short phrase response, do not add structure
+  if (trimmed.split(/\s+/).length <= 4) {
+    return trimmed;
+  }
 
-  // Convert standalone bold lines into structured section headers
-  structured = structured.replace(/^(\s*)\*\*([^*\n]+)\*\*:?\s*$/gm, (match, space, title) => {
-    const trimmedTitle = title.trim();
-    if (trimmedTitle.length < 3) return match;
-    return `${space}### ${trimmedTitle}`;
-  });
+  let structured = text;
 
   // Convert asterisk bullets (* Item) to standard dash bullets (- Item)
   structured = structured.replace(/^(\s*)\*\s+/gm, "$1- ");
 
   // Clean unclosed or punctuation-adjacent italics like *‘word’* to ‘word’
   structured = structured.replace(/\*([‘'"])(.*?)([’'"])\*/g, "$1$2$3");
-
-  // Ensure blank line before bullet lists so CommonMark parsers recognize them as lists
-  structured = structured.replace(/([^\n])\n(- \S)/g, "$1\n\n$2");
-  structured = structured.replace(/([^\n])\n(\d+\. \S)/g, "$1\n\n$2");
 
   return structured;
 }
@@ -172,8 +194,8 @@ export function cleanAiCliches(text: string): string {
     cleaned = cleaned.replace(regex, replacement);
   }
 
-  // Remove generic AI preambles
-  cleaned = cleaned.replace(/^(Certainly!|Sure!|Here is a post|Here's a breakdown|Here is a draft|Here is an executive briefing):\s*/i, "");
+  // Remove generic AI preambles and bot openings
+  cleaned = cleaned.replace(/^(Certainly!|Sure!|Here is a post|Here's a breakdown|Here is a draft|Here is an executive briefing|As an AI|I would be happy to help):\s*/i, "");
 
   return cleaned;
 }

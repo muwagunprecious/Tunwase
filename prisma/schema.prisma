@@ -675,3 +675,207 @@ enum Role {
   EDITOR
   VIEWER
 }
+
+// ============================================================
+// LINKEDIN SOCIAL MEDIA INTELLIGENCE & CONTENT MANAGEMENT SYSTEM
+// ============================================================
+
+model ReferenceWriter {
+  id           String                   @id @default(uuid())
+  name         String
+  linkedinUrl  String                   @unique
+  bio          String?
+  notes        String?
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  posts        ReferencePost[]
+  styleProfile GeneralizedStyleProfile?
+}
+
+model ReferencePost {
+  id          String          @id @default(uuid())
+  writerId    String
+  postUrl     String?
+  postText    String
+  publishedAt DateTime?
+  topic       String?
+  collectedAt DateTime        @default(now())
+  sourceType  String          @default("MANUAL_INPUT") // URL_FETCH, MANUAL_INPUT, DATA_EXPORT
+  writer      ReferenceWriter @relation(fields: [writerId], references: [id], onDelete: Cascade)
+
+  @@index([writerId])
+  @@index([collectedAt])
+}
+
+model GeneralizedStyleProfile {
+  id                         String           @id @default(uuid())
+  writerId                   String?          @unique
+  writerName                 String?
+  tone                       String[]
+  hookPatterns               String[]
+  storytellingJson           String           @default("{}")
+  paragraphStyle             String           @default("short")
+  sentenceStyle              String           @default("clear_and_direct")
+  pacing                     String?          @default("measured_reflective")
+  emotionalProgression       String?          @default("personal_to_universal")
+  closingStyle               String           @default("reflective")
+  ctaStyle                   String?          @default("open_invitation")
+  vocabularyComplexity       String           @default("simple_and_direct")
+  levelOfFormality           String           @default("conversational_authentic")
+  emotionalIntensity         String           @default("medium_high")
+  whitespaceStyle            String           @default("generous")
+  narrativePerspective       String           @default("first_person_reflective")
+  storytellingPatterns       String[]
+  sampleCharacteristicsJson  String?
+  createdAt                  DateTime         @default(now())
+  updatedAt                  DateTime         @updatedAt
+  writer                     ReferenceWriter? @relation(fields: [writerId], references: [id], onDelete: Cascade)
+}
+
+model AdetunwaseWritingProfile {
+  id                   String   @id @default(uuid())
+  entity               String   @unique @default("PERSONAL")
+  preferredOpenings    String[]
+  preferredEndings     String[]
+  favoredWords         String[]
+  avoidedWords         String[]
+  paragraphRhythm      String   @default("Short, punchy paragraphs with breathing room")
+  sentenceRhythm       String   @default("Direct, conversational, natural cadence")
+  emotionalTone        String   @default("Authentic, grounded, inspiring without hype")
+  youthTalkStyle       String?
+  africaTalkStyle      String?
+  educationTalkStyle   String?
+  leadershipTalkStyle  String?
+  technologyTalkStyle  String?
+  socialImpactTalkStyle String?
+  failureSuccessStyle  String?
+  slumArtTalkStyle     String?
+  learnedRulesJson     String   @default("[]")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model ContentContext {
+  id                     String            @id @default(uuid())
+  date                   DateTime          @default(now())
+  event                  String?
+  location               String?
+  people                 String?
+  organizations          String?
+  topic                  String
+  description            String
+  lessons                String?
+  verifiedFacts          String[]
+  statistics             String?
+  emotionalSignificance  String?
+  potentialContentAngles String[]
+  attachments            String[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+  captionItems           CaptionBankItem[]
+
+  @@index([createdAt])
+  @@index([topic])
+}
+
+model CaptionBankItem {
+  id                    String              @id @default(uuid())
+  title                 String
+  caption               String
+  hashtags              String[]
+  contentType           String
+  contentPillar         String
+  topic                 String
+  targetAudience        String?
+  contextId             String?
+  priority              String              @default("MEDIUM")
+  status                String              @default("ready_for_review")
+  scheduledDate         DateTime?
+  scheduledTime         String?
+  timezone              String              @default("Africa/Lagos")
+  voiceProfileVersion   String              @default("1.0")
+  rejectionReason       String?
+  factCheckStatus       String              @default("VERIFIED")
+  repetitionCheckScore  Float?
+  brandConsistencyScore Float?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  context               ContentContext?     @relation(fields: [contextId], references: [id], onDelete: SetNull)
+  edits                 ContentEdit[]
+  performance           ContentPerformance?
+
+  @@index([status])
+  @@index([contentPillar])
+  @@index([contentType])
+  @@index([createdAt])
+  @@index([scheduledDate])
+}
+
+model ContentEdit {
+  id                 String          @id @default(uuid())
+  captionBankId      String
+  originalAiCaption  String
+  editedCaption      String
+  finalCaption       String
+  editorChanges      String?
+  detectedRulesJson  String?
+  timestamp          DateTime        @default(now())
+  captionItem        CaptionBankItem @relation(fields: [captionBankId], references: [id], onDelete: Cascade)
+
+  @@index([captionBankId])
+}
+
+model ContentPerformance {
+  id             String          @id @default(uuid())
+  captionBankId  String          @unique
+  impressions    Int             @default(0)
+  reactions      Int             @default(0)
+  comments       Int             @default(0)
+  reposts        Int             @default(0)
+  clicks         Int             @default(0)
+  engagementRate Float           @default(0.0)
+  publishedAt    DateTime?
+  hookType       String?
+  captionItem    CaptionBankItem @relation(fields: [captionBankId], references: [id], onDelete: Cascade)
+}
+
+model MonthlyContentStrategy {
+  id                          String   @id @default(uuid())
+  monthYear                   String   @unique
+  monthlyThemes               String[]
+  pillarsPriority             String[]
+  importantDatesJson          String?
+  upcomingEventsJson          String?
+  foundationPrioritiesJson    String?
+  personalBrandPrioritiesJson String?
+  storyOpportunitiesJson      String?
+  thoughtLeadershipJson       String?
+  contentGapsJson             String?
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+}
+
+model ContentGenerationJob {
+  id                String    @id @default(uuid())
+  jobType           String    @default("DAILY_BATCH")
+  status            String    @default("PENDING")
+  captionsGenerated Int       @default(0)
+  backlogCount      Int       @default(0)
+  errorLog          String?
+  startedAt         DateTime  @default(now())
+  completedAt       DateTime?
+}
+
+model SocialEngineSettings {
+  id                      String   @id @default("default")
+  dailyCaptionsCount      Int      @default(7)
+  minBacklogCount         Int      @default(30)
+  generationTime          String   @default("06:00")
+  timezone                String   @default("Africa/Lagos")
+  autoGenerationEnabled   Boolean  @default(true)
+  contentPillars          String[]
+  captionLengthPreference String   @default("concise_impactful")
+  hashtagCountMin         Int      @default(3)
+  hashtagCountMax         Int      @default(7)
+  updatedAt               DateTime @updatedAt
+}

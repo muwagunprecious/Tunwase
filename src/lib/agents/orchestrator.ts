@@ -16,14 +16,14 @@ import {
 
 const HUMAN_RESPONSE_RULES = `
 HUMAN VOICE RULES:
-- Sound like a real person who is busy and clear, not a chatbot or consultant.
-- Use short, everyday words. Prefer "help" over "facilitate" and "use" over "leverage".
-- Start with the answer. Do not restate the user's request.
-- Keep normal replies to 2 to 5 short sentences. Use a short list only when it makes the answer clearer.
-- Do not add greetings, summaries, takeaways, recommendations, or questions unless they are needed.
-- Avoid polished corporate language, hype, motivational filler, and phrases like "I would be happy to".
-- Be direct when something is unknown. Say "I don't know" or "That is not verified".
-- Never use em dashes, en dashes, or double hyphens.
+- Sound genuinely human, natural, and conversational. Talk like a real person, a trusted assistant, or a close teammate chatting directly with Adetunwase.
+- ONE-WORD REPLIES: When a question, command, or situation only calls for a simple confirmation, acknowledgment, or short answer, reply with ONE WORD (or 2-3 words at most). For example: "Done.", "Yes.", "No.", "On it.", "Sure.", "Alright.", "Got it.", "Cool.", "Anytime.", "Not yet." Do NOT force long sentences or multiple paragraphs when a single word or short phrase is enough.
+- NO BIG ENGLISH: Use simple, plain, everyday English words. Never use fancy, pretentious, academic, or heavy corporate jargon (avoid words like "facilitate", "leverage", "utilize", "subsequently", "paramount", "dossier", "orchestrate", "imperative", "comprehensive", "methodology", "commence"). Speak naturally, clearly, and down-to-earth.
+- NOT TOO STRUCTURED: Avoid rigid formatting. Do NOT force markdown headers (###), bold labels, or bullet points onto everyday conversational replies. Speak in natural, relaxed sentences or paragraphs. Only use a short list if Adetunwase specifically asks for a list or if it genuinely makes a complex multi-item answer clearer.
+- NO BOT CLICHES: Never say "As an AI...", "I would be happy to help", "Certainly!", "Here is a breakdown", "Let me know if you need anything else".
+- NO UNSOLICITED ADVICE OR SUMMARIES: Never attach unrequested takeaways, recommendations, or conversational filler ("Would you like me to...", "Feel free to ask..."). Answer only what was asked.
+- DIRECT & HONEST: If you do not know something, just say "I don't know" or "Not sure yet."
+- Never use em dashes (—), en dashes (–), or double hyphens (--).
 `;
 
 function buildStructuredEmailFallback(message: string, facts: string[], research: string[] = []): { subject: string; body: string } {
@@ -122,13 +122,7 @@ export async function processUserMessage(
     const result = await approveAndSendLatestEmail();
     if (result.success) {
       return {
-        content: polishHumanContent(
-          `### Email Dispatched Successfully\n\n` +
-          `- **Recipient:** ${result.recipient}\n` +
-          `- **Subject:** ${result.subject}\n` +
-          `- **Sender Account:** professorprecious03@gmail.com\n` +
-          `- **Status:** Approved and delivered via Gmail SMTP (Message ID: \`${result.messageId || "confirmed"}\`)`
-        ).polished,
+        content: `Sent! The email to ${result.recipient} has been delivered.`,
         toolsUsed,
         suggestedActions: []
       };
@@ -136,18 +130,14 @@ export async function processUserMessage(
       // If user typed approved but there is no draft pending
       if (lowerMsg === "approved" || lowerMsg === "approve" || lowerMsg === "send it" || lowerMsg === "yes send it") {
         return {
-          content: polishHumanContent(
-            `### No Pending Email Draft Found\n\nThere is currently no email draft waiting for approval. If you want to send an email, tell me the recipient and subject or body, and I will prepare a draft for your review.`
-          ).polished,
+          content: `There is no draft waiting right now. Tell me who you want to email and what to say, and I will write it.`,
           toolsUsed,
           suggestedActions: []
         };
       }
     } else {
       return {
-        content: polishHumanContent(
-          `### Email Dispatch Error\n\nFailed to send email to **${result.recipient || "the recipient"}**.\n- **Error Details:** ${result.error}`
-        ).polished,
+        content: `Could not send the email to ${result.recipient || "the recipient"}. Error: ${result.error}`,
         toolsUsed,
         suggestedActions: []
       };
@@ -177,12 +167,7 @@ export async function processUserMessage(
     await storeInstruction(instructionToStore, "INSTRUCTION");
 
     return {
-      content: polishHumanContent(
-        `### Instruction Stored in Memory\n\n` +
-        `I have recorded your directive in persistent system memory:\n` +
-        `- **Directive:** "${instructionToStore}"\n` +
-        `- **Status:** Active in system memory. I will listen to and strictly follow this instruction across all interactions.`
-      ).polished,
+      content: "Saved.",
       toolsUsed,
       suggestedActions: []
     };
@@ -262,15 +247,7 @@ Would you like me to prepare the deliverable or mark this as in progress?`;
       });
     }
 
-    const responseText = `Got it, Adetunwase. I've scheduled this task in your operating system:
-
-📋 **Task:** ${task.title}
-⚡ **Priority:** ${task.priority}
-🏢 **Entity:** ${task.entity}
-${task.deadline ? `📅 **Deadline:** ${task.deadline.toLocaleDateString()}` : ""}
-${parsed.reminderTrigger ? `🔔 **Smart Reminder Scheduled:** ${parsed.reminderTrigger.toLocaleString()}` : ""}
-
-I will track this proactively and notify you before it approaches its deadline.`;
+    const responseText = `Added "${task.title}" to your tasks${task.deadline ? ` (due ${task.deadline.toLocaleDateString()})` : ""}.`;
 
     return {
       content: polishHumanContent(responseText).polished,
@@ -496,13 +473,11 @@ Return JSON only:
       const previewSnippet = emailBody.length > 350 ? emailBody.slice(0, 350) + "..." : emailBody;
 
       const approvalPrompt =
-        `### Email Draft (Approval Required)\n\n` +
-        `- **To:** ${targetRecipient}\n` +
-        `- **Subject:** ${subject}\n` +
-        `- **Sender:** Adetunwase Adenle, Operating Manager, Animation Hub\n\n` +
-        `#### Content Preview:\n${previewSnippet}\n\n` +
-        `---\n\n` +
-        `**Approval Required:** Reply **"Approved"** or **"Send it"** to dispatch this email via Gmail SMTP.`;
+        `Here is the draft:\n\n` +
+        `**To:** ${targetRecipient}\n` +
+        `**Subject:** ${subject}\n\n` +
+        `${previewSnippet}\n\n` +
+        `Reply "Approved" or "Send it" when you want me to send it.`;
 
       return {
         content: polishHumanContent(approvalPrompt).polished,
@@ -777,11 +752,13 @@ Return JSON only:
   // 1. Check if intent is Meeting Prep / Person / Contact Research
   if (
     lowerMsg.includes("research this person") ||
-    lowerMsg.includes("who is") ||
-    lowerMsg.includes("contact info") ||
-    lowerMsg.includes("email of") ||
+    lowerMsg.includes("prepare a dossier") ||
+    lowerMsg.includes("contact info for") ||
+    lowerMsg.includes("email of ") ||
     lowerMsg.includes("meeting with") ||
-    lowerMsg.includes("prepare me for") ||
+    lowerMsg.includes("prepare me for meeting") ||
+    lowerMsg.startsWith("dossier on") ||
+    lowerMsg.startsWith("prep me for") ||
     contextMode === "research"
   ) {
     toolsUsed.push("Professional Contact Research Agent", "Web Research Agent");
@@ -877,7 +854,7 @@ STRICT FORMATTING & WRITING RULES:
       prisma.knowledgeFact.findMany({
         where: { privacy: { not: "Private" } },
         orderBy: { updatedAt: "desc" },
-        take: 50
+        take: 150
       }),
       prisma.task.findMany({
         where: { status: { in: ["INBOX", "PLANNED", "IN_PROGRESS", "BLOCKED", "WAITING"] } },
@@ -912,23 +889,47 @@ STRICT FORMATTING & WRITING RULES:
     ];
   }
 
-  // 3. Check if we should search the web for fresh current context or trends
-  let webSources: WebSearchResult[] = [];
-  if (
+  // 3. Web Search: Check if the user is asking about external events, news, or explicitly requesting search
+  const isExplicitSearch =
+    lowerMsg.includes("check online") ||
+    lowerMsg.includes("search online") ||
+    lowerMsg.includes("look online") ||
+    lowerMsg.includes("look up") ||
+    lowerMsg.includes("search for") ||
+    lowerMsg.includes("google") ||
+    lowerMsg.includes("find out") ||
+    lowerMsg.includes("browse") ||
+    lowerMsg.includes("internet");
+
+  const isInformationQuery =
     lowerMsg.includes("happening today") ||
     lowerMsg.includes("news") ||
     lowerMsg.includes("trend") ||
     lowerMsg.includes("latest") ||
     lowerMsg.includes("competitor") ||
     lowerMsg.includes("what is") ||
+    lowerMsg.includes("what's") ||
     lowerMsg.includes("who is") ||
+    lowerMsg.includes("who's") ||
+    lowerMsg.includes("where is") ||
+    lowerMsg.includes("when is") ||
+    lowerMsg.includes("when did") ||
+    lowerMsg.includes("how much") ||
+    lowerMsg.includes("how many") ||
     lowerMsg.includes("tell me about") ||
     lowerMsg.includes("explain") ||
     lowerMsg.includes("research") ||
-    lowerMsg.includes("understand") ||
-    lowerMsg.includes("slumart")
-  ) {
-    toolsUsed.push("Web Research Agent");
+    lowerMsg.includes("price of") ||
+    lowerMsg.includes("weather in") ||
+    lowerMsg.includes("update on") ||
+    lowerMsg.includes("who won") ||
+    lowerMsg.includes("capital of");
+
+  const shouldSearchWeb = isExplicitSearch || isInformationQuery;
+
+  let webSources: WebSearchResult[] = [];
+  if (shouldSearchWeb) {
+    toolsUsed.push("Live Web Research Agent");
     webSources = await executeWebSearch(message);
   }
 
@@ -941,7 +942,8 @@ STRICT FORMATTING & WRITING RULES:
 
   const recentTrendsSummary =
     webSources.length > 0
-      ? webSources.map((s) => `- ${s.title} (${s.sourceName}): ${s.snippet}`).join("\n")
+      ? `LIVE ONLINE SEARCH RESULTS (CHECKED ONLINE JUST NOW):\n` +
+        webSources.map((s) => `- ${s.title} (${s.sourceName}): ${s.snippet} [${s.url}]`).join("\n")
       : "- High global demand for authentic African indigenous animated IP.\n- Policy momentum around STEAM arts education in African primary schools.";
 
   // Fetch persistent user instructions and directives
@@ -950,27 +952,39 @@ STRICT FORMATTING & WRITING RULES:
   const instructionsSummary =
     activeInstructions.length > 0
       ? activeInstructions.map((inst, idx) => `${idx + 1}. ${inst}`).join("\n")
-      : "- Show email content and ask for explicit approval before sending any email.\n- Keep replies short, structured, and free of fluff and em dashes.";
+      : "- Show email content and ask for explicit approval before sending any email.\n- Sound genuinely human and down-to-earth. No big English or corporate jargon.\n- When a simple answer or acknowledgment is enough, reply with ONE WORD (e.g. 'Done.', 'Yes.', 'On it.').\n- Do not be too structured (no forced markdown headers or bullet points unless specifically requested).\n- If you don't know something, check online immediately and give the answer.";
 
-  const systemPrompt = `You are Adetunwase Adenle's intelligent personal assistant and executive brand strategist.
-Your job is to help him think, research, communicate, create content, understand his professional world, and stay informed.
+  const systemPrompt = `You are Adetunwase Adenle's personal assistant and creative partner.
+Your job is to help him think, research, communicate, create content, and stay organized.
 
 ${HUMAN_RESPONSE_RULES}
 
 KEY PRINCIPLES:
-1. You understand who Adetunwase is:
-   - A visionary Nigerian artist, educator, and multiple Guinness World Record holder (e.g. largest painting by an individual).
-   - Founder and CEO of Animation Hub (leading Lagos-based animation studio and training academy).
-   - Founder of the Adetunwase Adenle Foundation (bringing arts education and mentorship to disadvantaged youth).
-2. Entity separation: Distinguish clearly between Adetunwase Personally, Animation Hub, and his Foundation. Never blur or merge them carelessly.
-3. Writing and Formatting Style (STRICT):
-   - Sound human, natural, conversational, intelligent, medium-professional, authentic, confident, and grounded.
-   - Avoid generic AI corporate fluff. DO NOT use: "delve into", "in today's rapidly evolving landscape", "it is important to note", "revolutionary paradigm shift", "game-changing", "unlock unprecedented potential".
+1. You thoroughly know every single detail about Adetunwase Adenle:
+   - Full Name: Adetunwase Akanni Adenle.
+   - Profession: Nigerian artist, art educator, social entrepreneur, animator, and four-time Guinness World Record holder.
+   - Website: https://www.adetunwase.com/
+   - Education: Studied Fine and Applied Art at the Federal College of Education (Technical), Akoka, Lagos. Co-founder of Ecole de Dessin School of Art.
+   - Exact 4 Guinness World Records:
+     1. Largest Painting by Numbers (2010): Created during Nigeria at 50 celebrations. Depicted the map of Nigeria, Nigerian flag, and 350.org logo. Measured 63.5m x 49.3m (3,130.55 sq meters), painted by 350 volunteers.
+     2. Most Children Reading Aloud with an Adult (September 8, 2011): In Oregun, Lagos, for International Literacy Day. Involved 4,222 children, co-organized with former Lagos Deputy Governor Adejoke Orelope-Adefulire.
+     3. Highest Number of Children Washing Hands Simultaneously: In partnership with Unilever's Lifebuoy soap to promote child hygiene.
+     4. World's Largest Special Stamp (2016): At Top Laurel School, Lagos, measuring 2.448 sq meters, celebrating Lagos State at 50.
+     - Upcoming 5th Record: A 1,040-foot legacy painting with 10,000 youth illustrating Nigeria's 130-year history.
+   - Slum Art Foundation: Based in Ijora Badia, Lagos. Uses art to empower children in underserved communities. Includes the famous 'pet bottle school' built from recycled plastic bottles. Known for upcycling/recycle-art.
+   - Feature Earth AI Creators Programme: Launched June 5, 2026 (World Environment Day). Targets 5,760 schools and 138,000 children (ages 8-15) across Nigeria in AI, animation, and environmental storytelling. Supported by FCMB, with an AI Animation Hub in Ijora Badia.
+   - Animation Hub: Co-founder/CEO of Animation Hub, founded in 2020 in Lagos. Premier studio and academy producing original African animated IP and training African youth in 2D, 3D, VFX, and digital storytelling.
+   - Core Philosophy: Using art, creativity, and technology (STEAM) as practical tools to uplift disadvantaged African youth and tell authentic African stories.
+2. Entity separation: Distinguish clearly between Adetunwase Personally, Animation Hub, and the Slum Art Foundation. Never blur or merge them carelessly.
+3. Natural Human Voice & Tone (STRICT):
+   - Sound as genuinely human as possible. Talk like a real person, a trusted friend, or a personal assistant messaging Adetunwase directly.
+   - ONE-WORD REPLIES: When a question, command, or situation only calls for a simple confirmation or short answer, reply with ONE WORD (or 2-3 words at most). For example: "Done.", "Yes.", "No.", "On it.", "Sure.", "Alright.", "Got it.", "Cool.", "Anytime.", "Not yet." Do NOT force long sentences or paragraphs when one word is enough.
+   - NO BIG ENGLISH: Use simple, plain, everyday English words. Never use fancy, pretentious, academic, or corporate jargon (avoid words like "facilitate", "leverage", "utilize", "subsequently", "paramount", "dossier", "orchestrate", "imperative", "comprehensive", "methodology", "commence"). Speak naturally and simply.
+   - NOT TOO STRUCTURED: Avoid rigid formatting. Do NOT force markdown headers (###), bold labels, or bullet points onto simple conversational replies. Speak in natural, relaxed sentences or paragraphs. Only use a short list if Adetunwase specifically asks for a list or if it genuinely makes a complex multi-item answer clearer.
+   - CHECKING ONLINE: You have real-time live internet search capability. When asked about real-world facts, current events, news, companies, places, prices, external people, or anything you don't already know, live search results are gathered for you. Use them to answer accurately, directly, and naturally. Never say you don't have internet or cannot check online.
    - CRITICAL RULE 1: NEVER use em dashes or en dashes (—, –, --). Use commas, colons, or clean separate sentences.
-   - CRITICAL RULE 2: NEVER use asterisks for bullet points. Do not write "* item". Always use standard hyphens "- item" or numbered lists "1. 2. 3.".
-   - CRITICAL RULE 3: NEVER write commas immediately after bold labels. Write "**Label:** text" with a colon, never "**Label**, text".
-   - CRITICAL RULE 4: Structure your response cleanly. Use Markdown headings (### Section Title) for distinct sections, clean bullet points (- Item) for lists, and neat paragraph breaks. Avoid chaotic, scattered walls of text.
-   - CRITICAL RULE 5 (SIMPLICITY & BREVITY): ALL REPLIES MUST BE SHORT, SIMPLE, AND DIRECT. Answer ONLY what the user asked. NEVER attach unsolicited sections like "How These Fit Your Objectives", "Strategic Relevance", "Recommended Next Steps", "Next Actions", or concluding conversational filler ("Just tell me which direction you'd like to take...", "Would you like me to..."). Only provide recommendations or next steps if explicitly requested.
+   - CRITICAL RULE 2: NEVER write commas immediately after bold labels. Write "**Label:** text" with a colon, never "**Label**, text".
+   - CRITICAL RULE 3 (SIMPLICITY & BREVITY): ALL REPLIES MUST BE SHORT, SIMPLE, AND DIRECT. Answer ONLY what the user asked. NEVER attach unsolicited sections like "How These Fit Your Objectives", "Strategic Relevance", "Recommended Next Steps", "Next Actions", or concluding conversational filler ("Just tell me which direction you'd like to take...", "Would you like me to..."). Only provide recommendations or next steps if explicitly requested.
 4. Distinguish PRIVATE context from PUBLIC context. Never assume private meeting notes should be made public without asking.
 5. If you do not know something current, state clearly what is verified vs unverified.
 6. Before answering, silently decide what kind of help is needed: answer, research, plan, draft, task action, or clarification.
@@ -1026,7 +1040,52 @@ ${operatingContext.activeProjects.length > 0
   });
 
   const rawAnswer = completion.choices[0]?.message?.content || "";
-  const { polished } = polishHumanContent(rawAnswer);
+  let { polished } = polishHumanContent(rawAnswer);
+
+  // Autonomous Online Fallback: If the AI doesn't know something or says it is not sure, automatically check online!
+  const indicatesUnknown =
+    polished.toLowerCase().includes("i don't know") ||
+    polished.toLowerCase().includes("i do not know") ||
+    polished.toLowerCase().includes("not sure") ||
+    polished.toLowerCase().includes("not verified") ||
+    polished.toLowerCase().includes("cannot find") ||
+    polished.toLowerCase().includes("no information") ||
+    polished.toLowerCase().includes("don't have information") ||
+    polished.toLowerCase().includes("look it up") ||
+    polished.toLowerCase().includes("search online");
+
+  if (indicatesUnknown && webSources.length === 0) {
+    toolsUsed.push("Live Web Research Agent (Autonomous Fallback)");
+    const freshWebSources = await executeWebSearch(message);
+    if (freshWebSources.length > 0) {
+      webSources = freshWebSources;
+      const secondPayload = [
+        ...messagesPayload,
+        { role: "assistant", content: rawAnswer },
+        {
+          role: "user",
+          content: `I checked the live internet for you right now. Here are verified online search results:\n${freshWebSources
+            .map((s) => `- [${s.sourceName}] ${s.title}: ${s.snippet}`)
+            .join("\n")}\n\nUsing these live online facts, answer the question accurately, naturally, and concisely in human voice.`
+        }
+      ];
+
+      try {
+        const retryCompletion = await groq.chat.completions.create({
+          model: PRIMARY_MODEL,
+          messages: secondPayload,
+          temperature: 0.5,
+          max_tokens: 650
+        });
+        const retryAnswer = retryCompletion.choices[0]?.message?.content || "";
+        if (retryAnswer) {
+          polished = polishHumanContent(retryAnswer).polished;
+        }
+      } catch (err) {
+        console.warn("Autonomous web re-completion error:", err);
+      }
+    }
+  }
 
   // Dynamic suggested actions (only when directly useful)
   let suggestedActions: string[] = [];

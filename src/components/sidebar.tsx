@@ -9,11 +9,13 @@ import {
   PenTool,
   Settings,
   ShieldCheck,
+  Share2,
   Sparkles
 } from "lucide-react";
 
 const MAIN_NAV = [
   { href: "/", label: "Assistant", icon: MessageSquare, desc: "Executive Chat & Actions" },
+  { href: "/social", label: "LinkedIn Engine", icon: Share2, desc: "Caption Bank & Strategy" },
   { href: "/people", label: "People Search", icon: Search, desc: "Public Intelligence & Contacts" },
   { href: "/operations", label: "Operations", icon: CheckSquare, desc: "Priorities, Tasks & Projects" },
   { href: "/studio", label: "Content Studio", icon: PenTool, desc: "Social & Brand Writing" },
